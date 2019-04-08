@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:UUID_Wrapper.xcodeproj">
+      location = "self:libuuidpp.xcodeproj">
    </FileRef>
 </Workspace>

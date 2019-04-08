@@ -1,0 +1,11 @@
+UUID_Wrapper.xcodeproj/xcuserdata
+UUID_Wrapper.xcodeproj/xcshareddata
+a.out
+CMakeFiles
+cmake_install.cmake
+CMakeCache.txt
+install_manifest.txt
+Makefile
+uuid_test
+libuuidpp.xcodeproj/xcuserdata
+libuuidpp.xcodeproj/project.xcworkspace/xcuserdata
