@@ -98,8 +98,8 @@ public:
 	// MARK: Static Creators
 
 	/// Create a random uuid object.
-	inline static uuid create() {
-		return internal_create(libuuidpp::uuid::Random);
+	inline static uuid random() {
+		return uuid(libuuidpp::uuid::Random);
 	}
 
 	// MARK: Validation

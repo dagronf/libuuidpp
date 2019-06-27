@@ -64,12 +64,15 @@ void testSimple() {
 	DSF_ASSERT(nilUUID.is_nil());
 
 	// Check that the static nil object is created only once (addresses should be the same)
-	DSF_ASSERT(&libuuidpp::uuid::nil == &libuuidpp::uuid::nil);
+	DSF_ASSERT_EQUAL(&libuuidpp::uuid::nil, &libuuidpp::uuid::nil, "static nils have different addresses?");
+
+	const libuuidpp::uuid nilc;
+	DSF_ASSERT_NOTEQUAL(&libuuidpp::uuid::nil, &nilc, "static nil and dynamically created nil have the same address?");
 
 	// Random guid creation
 
-	libuuidpp::uuid c1 = libuuidpp::uuid::create();
-	libuuidpp::uuid c2 = libuuidpp::uuid::create();
+	libuuidpp::uuid c1 = libuuidpp::uuid::random();
+	libuuidpp::uuid c2 = libuuidpp::uuid::random();
 
 	DSF_ASSERT_NOTEQUAL(c1, c2, "Random guids are the same!");
 
@@ -102,7 +105,7 @@ void testSimple() {
 	group.clear();
 	const size_t count = 100000;
 	for (size_t i = 0; i < count; i++) {
-		group.insert(libuuidpp::uuid::create());
+		group.insert(libuuidpp::uuid::random());
 	}
 	DSF_ASSERT_EQUAL(count, group.size(), "Generated some non-unique uuids");
 }
@@ -134,11 +137,14 @@ void testBinary() {
 void testHashing() {
 	std::cout << "Running test: testHashing" << std::endl;
 
-	const auto s1 = libuuidpp::uuid::create();
-	const auto s2 = libuuidpp::uuid::create();
+	const auto s1 = libuuidpp::uuid::random();
+	const auto s2 = libuuidpp::uuid::random();
 	const auto& nil = libuuidpp::uuid::nil;
+	const libuuidpp::uuid nilc;
 
 	DSF_ASSERT_EQUAL(nil.hash(), nil.hash(), "Null hash values should be equal");
+	DSF_ASSERT_EQUAL(nilc.hash(), nilc.hash(), "Null hash values should be equal");
+	DSF_ASSERT_EQUAL(nil.hash(), nilc.hash(), "Null hash values should be equal");
 	DSF_ASSERT_EQUAL(s1.hash(), s1.hash(), "Same uuid generated different hashes");
 	DSF_ASSERT_NOTEQUAL(s1.hash(), s2.hash(), "Hash values should be different");
 	DSF_ASSERT_NOTEQUAL(s1.hash(), nil.hash(), "Hash values should be different");
@@ -149,7 +155,7 @@ void testHashing() {
 	unorderedSet.clear();
 	const size_t count = 100000;
 	for (size_t i = 0; i < count; i++) {
-		unorderedSet.insert(libuuidpp::uuid::create());
+		unorderedSet.insert(libuuidpp::uuid::random());
 	}
 	DSF_ASSERT_EQUAL(count, unorderedSet.size(), "Mismatch in unordered_set size - unexpected hashing clash");
 
@@ -157,7 +163,7 @@ void testHashing() {
 
 	// Create 'count' random guids
 	for (size_t i = 0; i < count; i++) {
-		unorderedSet.insert(libuuidpp::uuid::create());
+		unorderedSet.insert(libuuidpp::uuid::random());
 	}
 
 	std::set<std::size_t> hashes;
@@ -301,7 +307,7 @@ void testAssign() {
 	DSF_ASSERT(tempStr == "C06C892B-50AB-4585-9819-5F4BA3B8F69B");
 #endif
 
-	auto c1 = libuuidpp::uuid::create();
+	auto c1 = libuuidpp::uuid::random();
 	libuuidpp::uuid c2 = c1;
 	DSF_ASSERT(c1 == c2); // "Random guids are the same!"
 
@@ -402,10 +408,10 @@ void testOrdering() {
 	std::vector<libuuidpp::uuid> result1;
 	std::vector<libuuidpp::uuid> result2;
 	for (size_t c = 0; c < 10; c++) {
-		result1.push_back(libuuidpp::uuid::create());
+		result1.push_back(libuuidpp::uuid::random());
 	}
 	for (size_t c = 0; c < 10; c++) {
-		result2.push_back(libuuidpp::uuid::create());
+		result2.push_back(libuuidpp::uuid::random());
 	}
 
 	DSF_ASSERT(result1 != result2);
@@ -426,7 +432,7 @@ void testOrdering() {
 
 	std::vector<libuuidpp::uuid> result4;
 	for (size_t c = 0; c < 100; c++) {
-		result4.push_back(libuuidpp::uuid::create());
+		result4.push_back(libuuidpp::uuid::random());
 	}
 	duplicate = std::adjacent_find(result4.begin(), result4.end());
 	std::sort(result4.begin(), result4.end());

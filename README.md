@@ -49,7 +49,7 @@ libuuidpp::uuid uid3("{D1ABE846-63D3-4C0A-89EF-68F1A306F6D3}");
 ### Creating random UUIDs and nil UUID.
 ```cpp
 // Create a random uuid
-auto random_uid = libuuidpp::uuid::create();
+auto random_uid = libuuidpp::uuid::random();
 assert(!random_uid.is_nil());
 
 // nil uuid (statically defined)
@@ -58,9 +58,7 @@ assert(nil_uid.is_nil());
 ```
 
 ### Binary handling
-
 ```cpp
-
 /// Create a uuid object from raw binary data
 libuuidpp::uuid::binary binaryData {
    0xc0, 0x6c, 0x89, 0x2b, 0x50, 0xab, 0x45, 0x85, 0x98, 0x19, 0x5f, 0x4b, 0xa3, 0xb8, 0xf6, 0x9b
@@ -76,18 +74,15 @@ const libuuidpp::uuid::binary roundTrip = raw.data();
 #### Constructor throws exceptions for invalid uuids
 ```cpp
 try {
-   libuuidpp::uuid my_dodgy_uuid("This should fail");
+   libuuidpp::uuid my_dodgy_uuid("F211F534-8DFB-4269-9A bad");
 	
    // Do something with my_dodgy_uuid
 	
 } catch (libuuidpp::exception::invalid_uuid e) {
    printf("Successfully caught exception during creation\n");
 }
-
 ```
-
 #### Basic setters
-
 ```cpp
 libuuidpp::uuid myUUID;
 bool didSet = myUUID.set("F211F534-8DFB-4269-9AF1-245FA0AB8D87");
@@ -106,9 +101,7 @@ assert(!myUUID.is_nil());
 auto newUUID = libuuidpp::uuid("D1ABE846-63D3-4C0A-89EF-68F1A306F6D3");
 myUUID = newUUID;
 assert(myUUID == newUUID);
-
 ```
-
 ### Generate a string from the uuid
 ```cpp
 libuuidpp::uuid uid1("D1ABE846-63D3-4C0A-89EF-68F1A306F6D3");
@@ -130,7 +123,6 @@ std::string uidString4 = uid1.str(libuuidpp::uuid::formatting::lowercase | libuu
 assert(uidString4 == "{d1abe846-63d3-4c0a-89ef-68f1a306f6d3}");
 ```
 ### Comparison operators
-
 ```cpp
 libuuidpp::uuid uid1("d1abe846-63d3-4c0a-89ef-68f1a306f6d3");
 libuuidpp::uuid uid2("{D1ABE846-63D3-4C0A-89EF-68F1A306F6D3}");
@@ -141,20 +133,16 @@ assert(uid1 == uid2);
 
 /// uid2 and uid3 are different uuids, so they aren't equal
 assert(uid2 != uid3);
-
 ```
-
 ### Lexigraphic sorting support
-
 ```cpp
 std::vector<libuuidpp::uuid> result;
 for (size_t c = 0; c < 10; c++) {
-   result.push_back(libuuidpp::uuid::create());
+   result.push_back(libuuidpp::uuid::random());
 }
 std::sort(result1.begin(), result1.end(), std::less<libuuidpp::uuid>());
 std::sort(result1.begin(), result1.end(), std::greater<libuuidpp::uuid>());
 ```
-
 ## Thanks
 
 Typesafe enum bitfield support from Just Software Solutions.
